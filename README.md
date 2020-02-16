@@ -223,6 +223,8 @@ The good news is that you can handle those issues using a good old try catch:
   }
 ```
 
+After nagigation is done, you can do ``$headers = $page->getAllHeaders();``, which will give you an array of all request headers, usefull for debuging and scraping.
+
 #### Evaluate script on the page
 
 Once the page has completed the navigation you can evaluate arbitrary script on this page:

@@ -251,12 +251,12 @@ class Page
                 const script = document.createElement("script");
                 script.type = "text/javascript";
                 script.src = src;
-                
+
                 const promise = new Promise((res, rej) => {
                     script.onload = res;
                     script.onerror = rej;
                 });
-                
+
                 document.head.appendChild(script);
                 await promise;
             }';
@@ -266,12 +266,12 @@ class Page
                 var script = document.createElement("script");
                 script.type = "text/javascript";
                 script.text = scriptContent;
-                
+
                 let error = null;
                 script.onerror = e => {error = e};
-                
+
                 document.head.appendChild(script);
-                
+
                 if (error) {
                     throw error;
                 }
@@ -300,6 +300,20 @@ class Page
         $this->getSession()->getConnection()->readData();
         return $this->frameManager->getMainFrame()->getLifeCycle();
     }
+
+    //custom code
+
+    /**
+     * get all headers
+     *
+     *
+     */
+    public function getAllHeaders()
+    {
+        return $this->getSession()->getConnection()->getHeaders();
+        // return $this->frameManager->getMainFrame()->getLifeCycle();
+    }
+    // custom code
 
     /**
      * Check if the lifecycle event was reached
@@ -540,7 +554,7 @@ class Page
             }
             $pdfOptions['printBackground'] = $options['printBackground'];
         }
-    
+
         // option displayHeaderFooter
         if (array_key_exists('displayHeaderFooter', $options)) {
             // displayHeaderFooter requires type to be boolean
@@ -551,7 +565,7 @@ class Page
             }
             $pdfOptions['displayHeaderFooter'] = $options['displayHeaderFooter'];
         }
-    
+
         // option headerTemplate
         if (array_key_exists('headerTemplate', $options)) {
             // headerTemplate requires type to be string
@@ -562,7 +576,7 @@ class Page
             }
             $pdfOptions['headerTemplate'] = $options['headerTemplate'];
         }
-    
+
         // option footerTemplate
         if (array_key_exists('footerTemplate', $options)) {
             // footerTemplate requires type to be string

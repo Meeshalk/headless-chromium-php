@@ -75,6 +75,11 @@ class Connection extends EventEmitter implements LoggerAwareInterface
     protected $receivedData = [];
 
     /**
+     * @var array array of headers
+     */
+    protected $headers = [];
+
+    /**
      * CommunicationChannel constructor.
      * @param SocketInterface|string $socketClient
      * @param int|null $sendSyncDefaultTimeout
@@ -262,6 +267,14 @@ class Connection extends EventEmitter implements LoggerAwareInterface
     }
 
     /**
+     * Receive and stack data from the socket
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
      * Read data from CRI and store messages
      *
      * @return bool true if data were received
@@ -335,6 +348,13 @@ class Connection extends EventEmitter implements LoggerAwareInterface
             if (isset($response['method'])) {
                 if ($response['method'] == 'Target.receivedMessageFromTarget') {
                     $session = $this->sessions[$response['params']['sessionId']];
+                    //custom code
+                    $headersArray = json_decode($response['params']['message'], 1);
+                    if(isset($headersArray['params']['request']['headers']))
+                    {
+                      $this->headers[] = $headersArray['params']['request']['headers'];
+                    }
+                    //----------
                     return $this->dispatchMessage($response['params']['message'], $session);
                 } else {
                     if ($session) {
